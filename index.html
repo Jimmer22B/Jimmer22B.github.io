@@ -7,13 +7,13 @@
 <meta name="description" content="Jímmer Muñoz — Diseñador UX/UI y editor de video en Cali, Colombia. Investigación de usuarios, prototipado en Figma, producción audiovisual e IA aplicada.">
 <meta property="og:title" content="Jímmer Muñoz · UX Designer & Video Editor">
 <meta property="og:description" content="Diseño de experiencia de usuario, edición de video e IA. Cali, Colombia.">
-<meta property="og:image" content="https://jimmer22b.github.io/assets/img/hero-ai.jpg">
+<meta property="og:image" content="https://jimmer22b.github.io/assets/img/hero-full.jpg">
 <meta name="theme-color" content="#07070c">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%2307070c'/><text x='50' y='66' font-size='52' font-family='Arial' font-weight='700' text-anchor='middle' fill='%237cf7d4'>JM</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="preload" as="image" href="assets/img/hero-ai.jpg">
+<link rel="preload" as="image" href="assets/img/hero-full.jpg">
 <style>
 :root{
   --bg:#07070c; --card:rgba(255,255,255,.04); --line:rgba(255,255,255,.09);
@@ -56,7 +56,6 @@ h2{font-family:'Space Grotesk',sans-serif;font-size:clamp(2rem,5vw,3.6rem);line-
 .cux{color:var(--ux)}.cvid{color:var(--vid)}
 
 /* HERO */
-#inicio{min-height:100svh;display:grid;grid-template-columns:1.1fr .9fr;align-items:center;gap:56px;padding-top:110px}
 .status{display:inline-flex;align-items:center;gap:10px;font-size:.85rem;border:1px solid var(--line);background:var(--card);padding:7px 14px;border-radius:999px;color:var(--muted)}
 .dot{width:8px;height:8px;border-radius:50%;background:#3dff9a;box-shadow:0 0 0 0 #3dff9a;animation:ping 2s infinite}
 @keyframes ping{70%{box-shadow:0 0 0 10px transparent}}
@@ -78,39 +77,46 @@ h1 .l{display:inline-block;opacity:0;transform:translateY(60%) rotate(8deg);anim
 .btn.main{background:var(--text);color:var(--bg);border-color:transparent}
 .btn.main:hover{background:var(--a1)}
 
-/* AI frame */
-.ai-frame{position:relative;aspect-ratio:3/4;width:100%;max-width:470px;justify-self:center;border-radius:28px;transform-style:preserve-3d;transition:transform .2s}
-.ai-frame::before{content:"";position:absolute;inset:-2px;border-radius:30px;background:conic-gradient(from var(--ang,0deg),var(--a1),var(--a2),var(--a3),var(--a1));animation:spin 6s linear infinite;z-index:-1;filter:blur(1px)}
-.ai-frame::after{content:"";position:absolute;inset:-30px;border-radius:50px;background:conic-gradient(from var(--ang,0deg),var(--a1),var(--a2),var(--a3),var(--a1));animation:spin 6s linear infinite;z-index:-2;filter:blur(50px);opacity:.35}
-@property --ang{syntax:'<angle>';initial-value:0deg;inherits:false}
-@keyframes spin{to{--ang:360deg}}
-.ai-inner{position:absolute;inset:0;border-radius:27px;overflow:hidden;background:#05050a}
-#ai{width:100%;height:100%;display:block}
-.scan-lines{position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.18) 0 1px,transparent 1px 3px);mix-blend-mode:multiply}
-.vignette{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 45%,transparent 55%,rgba(5,5,10,.75))}
-.corner{position:absolute;width:26px;height:26px;border:2px solid var(--a1);opacity:.9}
-.corner.tl{top:14px;left:14px;border-right:0;border-bottom:0}
-.corner.tr{top:14px;right:14px;border-left:0;border-bottom:0}
-.corner.bl{bottom:14px;left:14px;border-right:0;border-top:0}
-.corner.br{bottom:14px;right:14px;border-left:0;border-top:0}
-.hud{position:absolute;font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.06em;color:var(--a1);text-shadow:0 0 8px rgba(124,247,212,.6);pointer-events:none}
-.hud.top{top:18px;left:48px;right:48px;display:flex;justify-content:space-between}
-.hud.log{left:20px;bottom:20px;right:20px;line-height:1.55;color:#cffff2}
-.hud.log div{opacity:0;transform:translateX(-6px);transition:.3s}
-.hud.log div.on{opacity:1;transform:none}
-.rec{display:inline-flex;align-items:center;gap:6px;color:var(--vid)}
-.rec::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--vid);animation:blink 1s steps(1) infinite}
-.facebox{position:absolute;left:44%;top:25%;width:17%;height:13%;border:1.5px solid var(--a1);opacity:0;transform:scale(1.6);transition:opacity .5s,transform .6s cubic-bezier(.2,.9,.2,1);box-shadow:0 0 18px rgba(124,247,212,.5),inset 0 0 18px rgba(124,247,212,.2)}
+/* HERO — gemelo digital */
+#inicio{max-width:none;padding:0;height:210vh;position:relative}
+.stage{position:sticky;top:0;height:100svh;overflow:hidden;display:flex;align-items:center}
+.htext{position:relative;z-index:3;width:min(560px,48vw);margin-left:max(20px,calc((100vw - 1180px)/2 + 20px));padding-top:60px}
+.visual{position:absolute;top:0;right:0;bottom:0;width:56vw;clip-path:polygon(16% 0,100% 0,100% 100%,0 100%);background:#05060d}
+.visual canvas{position:absolute;inset:0;width:100%;height:100%;display:block;cursor:crosshair;touch-action:pan-y}
+.visual::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,var(--bg) 0,rgba(7,7,12,.55) 14%,transparent 34%),linear-gradient(0deg,rgba(7,7,12,.7),transparent 22%)}
+.slash{position:absolute;top:0;right:0;bottom:0;width:56vw;pointer-events:none;z-index:2}
+.slash svg{width:100%;height:100%}
+.hud2{position:absolute;z-index:3;font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.08em;color:var(--a1);text-shadow:0 0 8px rgba(124,247,212,.6);pointer-events:none}
+.hud2.tr{top:78px;right:28px;display:flex;gap:16px}
+.meter{position:absolute;z-index:3;right:28px;bottom:30px;width:210px;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:#cffff2;pointer-events:none}
+.meter .row{display:flex;justify-content:space-between;margin-bottom:8px;letter-spacing:.08em}
+.meter .row b{color:var(--a1);font-weight:500}
+.meter .track2{height:4px;border-radius:4px;background:rgba(255,255,255,.12);overflow:hidden}
+.meter .track2 i{display:block;height:100%;width:0;background:var(--grad)}
+.facebox{position:absolute;z-index:3;border:1.5px solid var(--a1);opacity:0;transform:scale(1.5);transition:opacity .4s,transform .5s cubic-bezier(.2,.9,.2,1);box-shadow:0 0 18px rgba(124,247,212,.5),inset 0 0 18px rgba(124,247,212,.2);pointer-events:none}
 .facebox.on{opacity:1;transform:none}
 .facebox span{position:absolute;left:-1.5px;bottom:100%;margin-bottom:6px;white-space:nowrap;background:var(--a1);color:#04120d;font-family:'JetBrains Mono',monospace;font-size:.62rem;font-weight:500;padding:3px 7px}
 .facebox::after{content:"";position:absolute;left:0;right:0;height:2px;background:var(--a1);box-shadow:0 0 10px var(--a1);animation:fscan 1.6s ease-in-out infinite alternate}
 @keyframes fscan{from{top:0}to{top:100%}}
-.chip{position:absolute;padding:9px 13px;border-radius:13px;background:rgba(12,12,22,.8);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--line);font-size:.78rem;display:flex;gap:8px;align-items:center;animation:bob 5s ease-in-out infinite;white-space:nowrap;z-index:2}
-.chip.c1{top:12%;left:-16%;border-color:rgba(124,247,212,.35)}
-.chip.c2{top:52%;right:-14%;animation-delay:-2.5s;border-color:rgba(255,106,213,.35)}
-.chip.c3{bottom:-3%;left:10%;animation-delay:-1.2s;border-color:rgba(139,123,255,.4)}
-@keyframes bob{50%{transform:translateY(-12px)}}
-
+.term{margin-top:26px;font-family:'JetBrains Mono',monospace;font-size:.85rem;color:var(--muted);min-height:3.2em;line-height:1.6}
+.term b{color:var(--a1);font-weight:500}
+.hint{position:absolute;z-index:3;left:50%;bottom:26px;transform:translateX(-50%);font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.2em;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:8px;transition:opacity .4s}
+.hint i{width:1px;height:36px;background:linear-gradient(var(--a1),transparent);animation:drop 2s infinite}
+@keyframes drop{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+@media (max-width:900px){
+  #inicio{height:190vh}
+  .stage{align-items:flex-end}
+  .visual{width:100vw;clip-path:none;bottom:auto;height:62svh}
+  .visual::after{background:linear-gradient(0deg,var(--bg) 2%,rgba(7,7,12,.55) 22%,transparent 45%)}
+  .slash{display:none}
+  .htext{width:auto;margin:0 16px 36px;padding-top:0}
+  .htext .status{display:none}
+  h1{font-size:clamp(3rem,15vw,4.6rem)}
+  .hud2.tr{top:74px;right:16px}
+  .meter{right:16px;left:auto;top:100px;bottom:auto;width:150px}
+  .hint{display:none}
+  .term{display:none}
+}
 /* marquee */
 .marquee{overflow:hidden;border-block:1px solid var(--line);padding:22px 0;background:rgba(255,255,255,.015);-webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)}
 .track{display:flex;gap:48px;width:max-content;animation:mq 40s linear infinite;font-family:'Space Grotesk',sans-serif;font-size:clamp(1.3rem,3vw,2.2rem);font-weight:500;color:var(--muted)}
@@ -242,9 +248,6 @@ footer{text-align:center;padding:40px 20px;color:var(--muted);font-size:.82rem;b
   .aistrip ul{grid-template-columns:1fr 1fr}
 }
 @media (max-width:900px){
-  #inicio{grid-template-columns:1fr;gap:48px}
-  .ai-frame{max-width:360px}
-  .chip.c1{left:-6%}.chip.c2{right:-6%}
   .bento{grid-template-columns:1fr 1fr}
   .s4,.s3,.s6{grid-column:span 2}.s2{grid-column:span 1}
   .duo,.ai,.edu,.tools3,.soon{grid-template-columns:1fr}
@@ -255,6 +258,8 @@ footer{text-align:center;padding:40px 20px;color:var(--muted);font-size:.82rem;b
 @media (max-width:520px){
   .s2{grid-column:span 2}
   nav a.hide{display:none}
+  nav a[href="#disciplinas"]{display:none}
+  nav a{padding:8px 9px}
   .steps{grid-template-columns:1fr}
   .aistrip ul{grid-template-columns:1fr}
   .disc{padding:24px}
@@ -321,37 +326,29 @@ footer{text-align:center;padding:40px 20px;color:var(--muted);font-size:.82rem;b
 
 <!-- HERO -->
 <section id="inicio">
-  <div>
-    <span class="status"><span class="dot"></span> <span data-en="Available for new projects">Disponible para nuevos proyectos</span></span>
-    <h1 id="name">Jímmer<br>Muñoz</h1>
-    <div class="pillars">
-      <span class="pill ux">◆ UX Design</span><span class="pill vid">● Video Editing</span><span class="pill ai" data-en="✦ AI">✦ IA</span>
+  <div class="stage">
+    <div class="visual" id="visual">
+      <canvas id="ai" aria-label="Jímmer Muñoz" role="img"></canvas>
     </div>
-    <p class="role">&gt; <b id="typed"></b><span class="caret">&nbsp;</span></p>
-    <div class="cta">
-      <a href="#contacto" class="btn main" data-en="Let's work together ↗">Trabajemos juntos ↗</a>
-      <a href="#portafolio" class="btn" data-en="▶ See my work">▶ Ver mi portafolio</a>
-    </div>
-  </div>
+    <div class="slash"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><defs><linearGradient id="sl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7cf7d4"/><stop offset=".5" stop-color="#8b7bff"/><stop offset="1" stop-color="#ff6ad5"/></linearGradient></defs><line x1="16" y1="0" x2="0" y2="100" stroke="url(#sl)" stroke-width="2" vector-effect="non-scaling-stroke"/></svg></div>
+    <div class="facebox" id="face"><span>ID: JÍMMER · 99.7%</span></div>
+    <div class="hud2 tr"><span>AI·RENDER v3.0</span><span class="rec">REC</span></div>
+    <div class="meter"><div class="row"><span data-en="AI LAYER">CAPA IA</span><b id="pct">0%</b></div><div class="track2"><i id="bar"></i></div></div>
 
-  <div class="ai-frame" id="frame">
-    <div class="ai-inner">
-      <canvas id="ai" width="600" height="800" aria-label="Jímmer Muñoz" role="img"></canvas>
-      <div class="scan-lines"></div>
-      <div class="vignette"></div>
-      <div class="facebox" id="face"><span>ID: JÍMMER · 99.7%</span></div>
-      <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
-      <div class="hud top"><span>AI·RENDER v2.6</span><span class="rec">REC</span></div>
-      <div class="hud log" id="hudlog">
-        <div data-en="&gt; loading neural model…">&gt; cargando modelo neuronal…</div>
-        <div data-en="&gt; rebuilding subject [768 fragments]">&gt; reconstruyendo sujeto [768 fragmentos]</div>
-        <div data-en="&gt; profile: UX Designer + Video Editor">&gt; perfil: UX Designer + Video Editor</div>
-        <div data-en="&gt; status: &lt;b style=&quot;color:#3dff9a&quot;&gt;READY ✓&lt;/b&gt;">&gt; estado: <b style="color:#3dff9a">LISTO ✓</b></div>
+    <div class="htext">
+      <span class="status"><span class="dot"></span> <span data-en="Available for new projects">Disponible para nuevos proyectos</span></span>
+      <h1 id="name">Jímmer<br>Muñoz</h1>
+      <div class="pillars">
+        <span class="pill ux">◆ UX Design</span><span class="pill vid">● Video Editing</span><span class="pill ai" data-en="✦ AI">✦ IA</span>
       </div>
+      <p class="role">&gt; <b id="typed"></b><span class="caret">&nbsp;</span></p>
+      <div class="cta">
+        <a href="#contacto" class="btn main" data-en="Let's work together ↗">Trabajemos juntos ↗</a>
+        <a href="#portafolio" class="btn" data-en="▶ See my work">▶ Ver mi portafolio</a>
+      </div>
+      <div class="term" id="term"></div>
     </div>
-    <div class="chip c1" data-en="◆ UX Research">◆ Investigación UX</div>
-    <div class="chip c2" data-en="🎬 Video editing">🎬 Edición de video</div>
-    <div class="chip c3" data-en="✦ Powered by AI">✦ Potenciado con IA</div>
+    <div class="hint" id="hint"><span data-en="SCROLL TO TRANSFORM">HAZ SCROLL PARA TRANSFORMAR</span><i></i></div>
   </div>
 </section>
 
@@ -573,7 +570,7 @@ footer{text-align:center;padding:40px 20px;color:var(--muted);font-size:.82rem;b
   <div class="huge rv" data-en="Got an idea?&lt;br&gt;&lt;a href=&quot;mailto:jijemube8.22@gmail.com&quot; class=&quot;gt&quot;&gt;Let's talk.&lt;/a&gt;">¿Tienes una idea?<br><a href="mailto:jijemube8.22@gmail.com" class="gt">Hablemos.</a></div>
   <div class="cta rv" style="justify-content:center">
     <button class="btn main" id="copy">📋 jijemube8.22@gmail.com</button>
-    <a class="btn wa" href="https://wa.me/573215160397" target="_blank" rel="noopener" id="wa"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.8-.9-2-1s-.5-.1-.7.1-.8 1-1 1.2-.4.2-.7.1a8.2 8.2 0 0 1-4-3.5c-.3-.5.3-.5.9-1.6.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6a1.1 1.1 0 0 0-.8.4 3.4 3.4 0 0 0-1 2.5 5.9 5.9 0 0 0 1.2 3.1 13.4 13.4 0 0 0 5.2 4.6c1.9.8 2.7.9 3.6.8a3.1 3.1 0 0 0 2-1.4 2.5 2.5 0 0 0 .2-1.4c-.1-.1-.3-.2-.7-.4zM12 21.8a9.8 9.8 0 0 1-5-1.4l-.4-.2-3.7 1 1-3.6-.2-.4A9.8 9.8 0 1 1 12 21.8zM12 0a12 12 0 0 0-10.3 18L0 24l6.2-1.6A12 12 0 1 0 12 0z"/></svg> WhatsApp +57 321 516 0397</a>
+    <a class="btn wa" href="https://wa.me/573215160397" target="_blank" rel="noopener" id="wa"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.8-.9-2-1s-.5-.1-.7.1-.8 1-1 1.2-.4.2-.7.1a8.2 8.2 0 0 1-4-3.5c-.3-.5.3-.5.9-1.6.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6a1.1 1.1 0 0 0-.8.4 3.4 3.4 0 0 0-1 2.5 5.9 5.9 0 0 0 1.2 3.1 13.4 13.4 0 0 0 5.2 4.6c1.9.8 2.7.9 3.6.8a3.1 3.1 0 0 0 2-1.4 2.5 2.5 0 0 0 .2-1.4c-.1-.1-.3-.2-.7-.4zM12 21.8a9.8 9.8 0 0 1-5-1.4l-.4-.2-3.7 1 1-3.6-.2-.4A9.8 9.8 0 1 1 12 21.8zM12 0a12 12 0 0 0-10.3 18L0 24l6.2-1.6A12 12 0 1 0 12 0z"/></svg> WhatsApp</a>
   </div>
   <div class="socials rv">
     <a href="https://www.linkedin.com/in/j%C3%ADmmer-jes%C3%BAs-mu%C3%B1oz-benavides-050533183/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9.5h4V21H3zM9.5 9.5h3.8v1.6h.1c.5-1 1.8-2 3.8-2 4 0 4.8 2.6 4.8 6V21h-4v-5.1c0-1.2 0-2.8-1.7-2.8s-2 1.3-2 2.7V21h-4z"/></svg></a>
@@ -608,114 +605,115 @@ let ri=0,ci=0,del=false;
 })();
 $('#track').innerHTML+=$('#track').innerHTML;
 
-/* ================= FOTO "TRANSFORMER" DE IA ================= */
+/* ================= GEMELO DIGITAL (capa de IA sobre la foto) ================= */
 (()=>{
-  const cv=$('#ai'),ctx=cv.getContext('2d'),W=cv.width,H=cv.height;
-  const COLS=24,ROWS=32,TW=W/COLS,TH=H/ROWS;
-  const img=new Image();img.src='assets/img/hero-ai.jpg';
-  let sx=0,sy=0,sw,sh,loaded=false,visible=false,started=false;
-  const tiles=[];let t0=0,assembled=false,mx=-1e3,my=-1e3,hover=false,glitchUntil=0,nextGlitch=0;
-  const ease=t=>1-Math.pow(1-t,4);
+  const vis=$('#visual'),cv=$('#ai'),ctx=cv.getContext('2d'),face=$('#face');
+  const img=new Image();img.src='assets/img/hero-full.jpg';
+  const FACE={x:.545,y:.56,w:.13,h:.1};        // rostro en la foto original (0–1)
+  const FOCUS={x:.55,y:.5};                      // punto que se mantiene visible al recortar
+  let W=0,H=0,S=1,photo,layer,fx,ready=false,t0=0,scrollP=0,shown=0;
+  let mx=-1e4,my=-1e4,lens=0,lensOn=false,glitchUntil=0,nextGlitch=0;
+  const clamp=(v,a,b)=>Math.min(b,Math.max(a,v)),ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+  const off=(w,h)=>{const c=document.createElement('canvas');c.width=w;c.height=h;return c};
 
-  // pantalla de espera: retícula + texto hasta que la foto cargue y sea visible
-  (function idle(){
-    if(started)return;
-    ctx.fillStyle='#05050a';ctx.fillRect(0,0,W,H);
-    ctx.strokeStyle='rgba(124,247,212,.1)';ctx.lineWidth=1;
-    for(let c=1;c<COLS;c++){ctx.beginPath();ctx.moveTo(c*TW,0);ctx.lineTo(c*TW,H);ctx.stroke()}
-    for(let r=1;r<ROWS;r++){ctx.beginPath();ctx.moveTo(0,r*TH);ctx.lineTo(W,r*TH);ctx.stroke()}
-    const now=performance.now(),y=((now/1800)%1)*H;
-    ctx.fillStyle='rgba(124,247,212,.35)';ctx.fillRect(0,y,W,2);
-    ctx.fillStyle='rgba(124,247,212,.8)';ctx.font='500 18px JetBrains Mono,monospace';ctx.textAlign='center';
-    ctx.fillText((LANG==='en'?'INITIALIZING AI':'INICIALIZANDO IA')+'.'.repeat(1+Math.floor(now/400)%3),W/2,H/2);
-    requestAnimationFrame(idle);
-  })();
-  function tryStart(){if(loaded&&visible&&!started){started=true;setup()}}
-  new IntersectionObserver(es=>{if(es[0].isIntersecting){visible=true;tryStart()}},{threshold:.35}).observe(cv);
-  function setup(){
-    sw=img.naturalWidth;sh=img.naturalHeight;
-    for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){
-      const cx=W/2,cy=H/2,a=Math.random()*Math.PI*2,d=500+Math.random()*700;
-      tiles.push({c,r,x0:cx+Math.cos(a)*d,y0:cy+Math.sin(a)*d,rot0:(Math.random()-.5)*6,
-        delay:(r/ROWS)*700+Math.random()*650,ox:0,oy:0});
+  function build(){
+    const r=vis.getBoundingClientRect();S=Math.min(devicePixelRatio||1,1.5);
+    W=Math.round(r.width*S);H=Math.round(r.height*S);if(!W||!H)return;
+    cv.width=W;cv.height=H;
+    // foto ajustada tipo "cover" manteniendo al sujeto en cuadro
+    const k=Math.max(W/img.naturalWidth,H/img.naturalHeight),dw=img.naturalWidth*k,dh=img.naturalHeight*k;
+    const dx=clamp(W*(innerWidth>900?.62:.5)-FOCUS.x*dw,W-dw,0),dy=clamp(H*(innerWidth>900?.42:.3)-FOCUS.y*dh,H-dh,0);
+    photo=off(W,H);photo.getContext('2d').drawImage(img,dx,dy,dw,dh);
+    fx={x:(dx+(FACE.x-FACE.w/2)*dw)/S,y:(dy+(FACE.y-FACE.h/2)*dh)/S,w:FACE.w*dw/S,h:FACE.h*dh/S};
+    Object.assign(face.style,{left:vis.offsetLeft+fx.x+'px',top:fx.y+'px',width:fx.w+'px',height:fx.h+'px'});
+    layer=off(W,H);const L=layer.getContext('2d');
+    L.fillStyle='#04050b';L.fillRect(0,0,W,H);
+    let data;try{data=photo.getContext('2d').getImageData(0,0,W,H).data}catch(e){data=null}
+    if(!data){ // respaldo si el navegador bloquea la lectura de píxeles (abrir como archivo local)
+      L.filter='grayscale(1) contrast(1.6) brightness(.8)';L.drawImage(photo,0,0);L.filter='none';
+      L.globalCompositeOperation='color';L.fillStyle='#39e6c2';L.fillRect(0,0,W,H);L.globalCompositeOperation='source-over';return;
     }
-    t0=performance.now();
-    if(reduce){assembled=true;finish()}
-    requestAnimationFrame(loop);
-    [0,700,1500].forEach((ms,i)=>setTimeout(()=>$$('#hudlog div')[i].classList.add('on'),ms));
-  }
-  function finish(){
-    $('#face').classList.add('on');
-    $$('#hudlog div').forEach(d=>d.classList.add('on'));
-    setTimeout(()=>$('#hudlog').style.opacity='.0',4200);
-    $('#hudlog').style.transition='opacity 1s';
-  }
-  function tile(t,x,y,rot,scale,tint){
-    const s=sw/COLS,h=sh/ROWS;
-    ctx.save();ctx.translate(x+TW/2,y+TH/2);if(rot)ctx.rotate(rot);if(scale!==1)ctx.scale(scale,scale);
-    ctx.drawImage(img,sx+t.c*s,sy+t.r*h,s,h,-TW/2,-TH/2,TW+.6,TH+.6);
-    if(tint>0){ctx.fillStyle=`rgba(${t.c%3?'124,247,212':'139,123,255'},${tint})`;ctx.fillRect(-TW/2,-TH/2,TW,TH);
-      ctx.strokeStyle=`rgba(124,247,212,${tint})`;ctx.lineWidth=1;ctx.strokeRect(-TW/2+.5,-TH/2+.5,TW-1,TH-1)}
-    ctx.restore();
-  }
-  function loop(now){
-    const el=now-t0;
-    ctx.fillStyle='#05050a';ctx.fillRect(0,0,W,H);
-    if(!assembled){
-      let done=true;
-      for(const t of tiles){
-        const p=Math.min(1,Math.max(0,(el-t.delay)/1100));if(p<1)done=false;
-        const e=ease(p),hx=t.c*TW,hy=t.r*TH;
-        if(p>0)tile(t,t.x0+(hx-t.x0)*e,t.y0+(hy-t.y0)*e,t.rot0*(1-e),.4+.6*e,.75*(1-e)+.08);
-      }
-      // retícula holográfica mientras se arma
-      ctx.strokeStyle='rgba(124,247,212,.08)';ctx.lineWidth=1;
-      for(let c=1;c<COLS;c++){ctx.beginPath();ctx.moveTo(c*TW,0);ctx.lineTo(c*TW,H);ctx.stroke()}
-      for(let r=1;r<ROWS;r++){ctx.beginPath();ctx.moveTo(0,r*TH);ctx.lineTo(W,r*TH);ctx.stroke()}
-      if(done&&el>2600){assembled=true;finish();nextGlitch=now+1800}
-    }else{
-      // foto completa + fragmentos que reaccionan al mouse
-      let disturbed=false;
-      for(const t of tiles){
-        const hx=t.c*TW+TW/2,hy=t.r*TH+TH/2,d=Math.hypot(hx-mx,hy-my);
-        const f=hover&&d<150?(1-d/150):0;
-        const tx=f?(hx-mx)/d*f*38:0,ty=f?(hy-my)/d*f*38:0;
-        t.ox+=(tx-t.ox)*.18;t.oy+=(ty-t.oy)*.18;t.f=f;
-        if(Math.abs(t.ox)>.3||Math.abs(t.oy)>.3)disturbed=true;
-      }
-      if(!disturbed)ctx.drawImage(img,sx,sy,sw,sh,0,0,W,H);
-      else for(const t of tiles){const m=Math.hypot(t.ox,t.oy)/38;tile(t,t.c*TW+t.ox,t.r*TH+t.oy,0,1-m*.25,m*.55)}
+    const lum=(x,y)=>{const i=(clamp(y,0,H-1)*W+clamp(x,0,W-1))*4;return(data[i]*.3+data[i+1]*.59+data[i+2]*.11)/255};
+    // 1) matriz de puntos (brillo = tamaño)
+    const st=Math.max(5,Math.round(7*S));
+    for(let y=st/2;y<H;y+=st)for(let x=st/2;x<W;x+=st){
+      const v=lum(x|0,y|0),rad=st*.48*Math.pow(v,.85);if(rad<.35)continue;
+      const t=y/H;L.fillStyle=`hsla(${170+t*140},95%,${45+v*30}%,${.35+v*.6})`;
+      L.beginPath();L.arc(x,y,rad,0,7);L.fill();
     }
-    // barrido de escaneo
-    const sp=((now/2600)%1)*(H+160)-80;
-    const g=ctx.createLinearGradient(0,sp-80,0,sp+4);
-    g.addColorStop(0,'rgba(124,247,212,0)');g.addColorStop(1,'rgba(124,247,212,.22)');
-    ctx.fillStyle=g;ctx.fillRect(0,sp-80,W,84);
-    ctx.fillStyle='rgba(180,255,235,.7)';ctx.fillRect(0,sp,W,1.5);
-    // glitch RGB
-    if(assembled&&!reduce){
-      if(now>nextGlitch){glitchUntil=now+260;nextGlitch=now+2600+Math.random()*3200}
-      if(now<glitchUntil){
-        for(let i=0;i<6;i++){
-          const y=Math.random()*H,h=6+Math.random()*34,off=(Math.random()-.5)*50;
-          ctx.drawImage(cv,0,y,W,h,off,y,W,h);
-          ctx.fillStyle=Math.random()>.5?'rgba(255,106,213,.18)':'rgba(124,247,212,.18)';ctx.fillRect(0,y,W,h);
-        }
-        ctx.globalCompositeOperation='lighter';ctx.globalAlpha=.25;
-        ctx.drawImage(cv,6,0);ctx.globalAlpha=1;ctx.globalCompositeOperation='source-over';
-      }
+    // 2) contornos (detección de bordes Sobel) en neón
+    const e=Math.max(2,Math.round(2*S));L.globalCompositeOperation='lighter';
+    for(let y=e;y<H-e;y+=e)for(let x=e;x<W-e;x+=e){
+      const gx=lum(x+e,y-e)+2*lum(x+e,y)+lum(x+e,y+e)-lum(x-e,y-e)-2*lum(x-e,y)-lum(x-e,y+e);
+      const gy=lum(x-e,y+e)+2*lum(x,y+e)+lum(x+e,y+e)-lum(x-e,y-e)-2*lum(x,y-e)-lum(x+e,y-e);
+      const m=Math.hypot(gx,gy);if(m<.42)continue;
+      L.fillStyle=m>1?'rgba(210,255,120,.95)':`rgba(124,247,212,${Math.min(1,(m-.42)*1.6)})`;L.fillRect(x,y,e,e);
     }
-    requestAnimationFrame(loop);
+    // 3) líneas de escaneo y retícula
+    L.globalCompositeOperation='source-over';L.fillStyle='rgba(0,0,0,.28)';
+    for(let y=0;y<H;y+=3*S)L.fillRect(0,y,W,S);
+    L.strokeStyle='rgba(139,123,255,.12)';L.lineWidth=1;
+    for(let x=0;x<W;x+=60*S){L.beginPath();L.moveTo(x,0);L.lineTo(x,H);L.stroke()}
+    for(let y=0;y<H;y+=60*S){L.beginPath();L.moveTo(0,y);L.lineTo(W,y);L.stroke()}
   }
-  const fr=$('#frame');
-  fr.addEventListener('pointermove',e=>{
-    const r=cv.getBoundingClientRect();mx=(e.clientX-r.left)/r.width*W;my=(e.clientY-r.top)/r.height*H;hover=true;
-    const x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
-    fr.style.transform=`perspective(1000px) rotateY(${x*10}deg) rotateX(${-y*10}deg)`;
-  });
-  fr.addEventListener('pointerleave',()=>{hover=false;fr.style.transform=''});
-  fr.addEventListener('click',()=>{glitchUntil=performance.now()+400});
-  const ok=()=>{loaded=true;tryStart()};img.complete&&img.naturalWidth?ok():(img.onload=ok);
+
+  function introP(now){ // al cargar: la capa sube, se sostiene y baja
+    if(reduce)return 0;const t=(now-t0)/1000;
+    if(t<1.6)return ease(t/1.6);if(t<2.4)return 1;if(t<3.8)return 1-ease((t-2.4)/1.4);return 0;
+  }
+  function onScroll(){
+    const s=$('#inicio'),tot=s.offsetHeight-innerHeight;
+    scrollP=clamp(-s.getBoundingClientRect().top/(tot*.85),0,1);
+    $('#hint').style.opacity=scrollP>.05?0:1;
+  }
+  const TERM={es:['~ $ whoami','Jímmer Muñoz · <b>UX Designer</b> + <b>Video Editor</b>','// potenciado con IA ✦'],
+              en:['~ $ whoami','Jímmer Muñoz · <b>UX Designer</b> + <b>Video Editor</b>','// powered by AI ✦']};
+  function term(p){ // texto tipo terminal que se escribe con el scroll
+    const lines=TERM[LANG],full=lines.join('\n'),n=Math.round(clamp((p-.15)/.7,0,1)*full.replace(/<[^>]+>/g,'').length);
+    let out='',c=0;for(const ln of lines){const plain=ln.replace(/<[^>]+>/g,'');if(c>=n)break;
+      out+=(c+plain.length<=n?ln:plain.slice(0,n-c))+'<br>';c+=plain.length+1}
+    $('#term').innerHTML=out;
+  }
+  function frame(now){
+    if(!ready){requestAnimationFrame(frame);return}
+    const p=Math.max(scrollP,introP(now));shown+=(p-shown)*.18;const q=shown;
+    ctx.drawImage(photo,0,0);
+    const y0=H*(1-q);
+    if(q>.002){ctx.save();ctx.beginPath();ctx.rect(0,y0,W,H-y0);ctx.clip();ctx.drawImage(layer,0,0);
+      const sy=y0+((now/12)%(H-y0+1));ctx.fillStyle='rgba(124,247,212,.08)';ctx.fillRect(0,sy,W,40*S);ctx.restore()}
+    if(q>.002&&q<.998){ // borde de la transformación
+      const g=ctx.createLinearGradient(0,y0-90*S,0,y0);g.addColorStop(0,'rgba(124,247,212,0)');g.addColorStop(1,'rgba(124,247,212,.35)');
+      ctx.fillStyle=g;ctx.fillRect(0,y0-90*S,W,90*S);ctx.fillStyle='#d9fff4';ctx.fillRect(0,y0-1*S,W,2*S);
+      ctx.shadowColor='#7cf7d4';ctx.shadowBlur=18;ctx.fillRect(0,y0-1*S,W,2*S);ctx.shadowBlur=0;
+    }
+    lens+=((lensOn?1:0)-lens)*.15;
+    if(lens>.01){ // lente que revela la capa IA
+      const R=(innerWidth>900?150:110)*S*lens;
+      ctx.save();ctx.beginPath();ctx.arc(mx,my,R,0,7);ctx.clip();ctx.drawImage(layer,0,0);ctx.restore();
+      ctx.strokeStyle='rgba(124,247,212,.9)';ctx.lineWidth=1.5*S;ctx.beginPath();ctx.arc(mx,my,R,0,7);ctx.stroke();
+      ctx.setLineDash([4*S,8*S]);ctx.beginPath();ctx.arc(mx,my,R+10*S,now/900,now/900+5);ctx.stroke();ctx.setLineDash([]);
+      ctx.fillStyle='rgba(124,247,212,.9)';ctx.font=`500 ${11*S}px JetBrains Mono,monospace`;ctx.fillText(LANG==='en'?'AI LAYER':'CAPA IA',mx+R*.72,my-R*.72);
+    }
+    if(!reduce){ // glitch ocasional
+      if(now>nextGlitch){glitchUntil=now+220;nextGlitch=now+3500+Math.random()*4000}
+      if(now<glitchUntil)for(let i=0;i<5;i++){const y=Math.random()*H,h=(6+Math.random()*30)*S,o=(Math.random()-.5)*40*S;
+        ctx.drawImage(cv,0,y,W,h,o,y,W,h);ctx.fillStyle=Math.random()>.5?'rgba(255,106,213,.16)':'rgba(124,247,212,.16)';ctx.fillRect(0,y,W,h)}
+    }
+    const faceIn=fx&&(q>1-(fx.y*S+fx.h*S*.5)/H||(lens>.5&&Math.hypot(mx/S-(fx.x+fx.w/2),my/S-(fx.y+fx.h/2))<120));
+    face.classList.toggle('on',!!faceIn);
+    const pct=Math.round(Math.max(q,lens*.25)*100);$('#pct').textContent=pct+'%';$('#bar').style.width=pct+'%';
+    term(Math.max(scrollP,0));
+    requestAnimationFrame(frame);
+  }
+  const pt=e=>{const r=cv.getBoundingClientRect();mx=(e.clientX-r.left)*S;my=(e.clientY-r.top)*S;lensOn=true};
+  cv.addEventListener('pointermove',pt);cv.addEventListener('pointerdown',pt);
+  cv.addEventListener('pointerleave',()=>lensOn=false);cv.addEventListener('pointerup',e=>{if(e.pointerType!=='mouse')lensOn=false});
+  cv.addEventListener('click',()=>glitchUntil=performance.now()+350);
+  addEventListener('scroll',onScroll,{passive:true});
+  let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{if(ready)build()},150)});
+  const go=()=>{build();ready=true;t0=performance.now();nextGlitch=t0+4500;onScroll()};
+  img.complete&&img.naturalWidth?go():(img.onload=go);
+  requestAnimationFrame(frame);
 })();
 
 /* red de partículas de fondo */
@@ -822,8 +820,8 @@ const KB=[
    es:'Usa la IA como copiloto en ambos frentes: sintetiza entrevistas, genera ideas y copies UX, acelera prototipos, escribe guiones y subtítulos y agiliza la edición. En Rutas de Piedras la usó para reconocer estatuas con la cámara.',
    en:'He uses AI as a copilot on both fronts: synthesizing interviews, generating ideas and UX copy, speeding up prototypes, writing scripts and subtitles and streamlining editing. In Rutas de Piedras he used it to recognize statues with the camera.'},
   {k:['contact','correo','email','mail','whatsapp','teléfono','telefono','phone','contratar','hire','llamar','call'],
-   es:'📧 jijemube8.22@gmail.com · 💬 WhatsApp +57 321 516 0397 · LinkedIn y Behance están abajo. ¡Está disponible para nuevos proyectos!',
-   en:'📧 jijemube8.22@gmail.com · 💬 WhatsApp +57 321 516 0397 · LinkedIn and Behance are below. He\'s available for new projects!'},
+   es:'📧 jijemube8.22@gmail.com · 💬 WhatsApp (botón en la sección de contacto) · LinkedIn y Behance están abajo. ¡Está disponible para nuevos proyectos!',
+   en:'📧 jijemube8.22@gmail.com · 💬 WhatsApp (button in the contact section) · LinkedIn and Behance are below. He\'s available for new projects!'},
   {k:['dónde','donde','where','ciudad','city','vive','live','ubica','remoto','remote'],
    es:'Vive en Cali, Colombia 🇨🇴, y trabaja de forma remota o híbrida.',
    en:'He lives in Cali, Colombia 🇨🇴, and works remotely or hybrid.'},
