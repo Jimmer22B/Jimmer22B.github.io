@@ -1,0 +1,668 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Rifa de Morocha</title>
+<meta name="description" content="Cuentas de la rifa pro gastos veterinarios de Morocha">
+<meta name="theme-color" content="#134e48">
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🐾%3C/text%3E%3C/svg%3E">
+<style>[hidden]{display:none!important}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap">
+<style>
+/* Layout: tablero de 100 puestos al centro, resumen de cuentas arriba, cobros y gastos abajo. Paleta del flyer: verde petróleo + verde lima de la férula. */
+:root{
+  --bg:#f3f8ec; --surface:#ffffff; --ink:#123b38; --muted:#5b7470; --line:#d5e3cc;
+  --teal:#134e48; --teal-ink:#ffffff; --lime:#8fdc2a; --lime-soft:#e4f7c8;
+  --paid:#2f8f3a; --paid-bg:#dff3d8; --owe:#c2410c; --owe-bg:#fde5d6; --part:#a16207; --part-bg:#fdf1c7;
+  --free-bg:#ffffff;
+  --display:"Fredoka","Nunito",system-ui,sans-serif; --body:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0d1a18; --surface:#142522; --ink:#e3f1e6; --muted:#97b0a9; --line:#26403b;
+  --teal:#1d6b62; --teal-ink:#ffffff; --lime:#9be63a; --lime-soft:#22381a;
+  --paid:#7fd68a; --paid-bg:#173a1f; --owe:#ffa274; --owe-bg:#41231a; --part:#f0c451; --part-bg:#3a3015; --free-bg:#142522;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0d1a18; --surface:#142522; --ink:#e3f1e6; --muted:#97b0a9; --line:#26403b;
+  --teal:#1d6b62; --teal-ink:#ffffff; --lime:#9be63a; --lime-soft:#22381a;
+  --paid:#7fd68a; --paid-bg:#173a1f; --owe:#ffa274; --owe-bg:#41231a; --part:#f0c451; --part-bg:#3a3015; --free-bg:#142522;
+  color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.45}
+.wrap{max-width:980px;margin:0 auto;padding-block:20px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:22px}
+h1,h2{font-family:var(--display);margin:0;text-wrap:balance;letter-spacing:.2px}
+h1{font-size:clamp(28px,6vw,40px);line-height:1.05}
+h2{font-size:21px}
+header{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:end;justify-content:space-between}
+.sub{color:var(--muted);margin:4px 0 0;font-weight:600}
+.pill{display:inline-flex;align-items:center;gap:6px;background:var(--teal);color:var(--teal-ink);border-radius:999px;padding:6px 14px;font-weight:700;font-size:13px}
+.status{font-size:13px;color:var(--muted);font-weight:600}
+.status.warn{color:var(--owe)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px;display:grid;gap:2px}
+.stat .k{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:700}
+.stat .v{font-family:var(--display);font-size:24px;font-weight:600;font-variant-numeric:tabular-nums}
+.stat.hero{background:var(--teal);border-color:var(--teal);color:var(--teal-ink)}
+.stat.hero .k{color:var(--teal-ink);opacity:.8}
+.bar{height:8px;border-radius:99px;background:var(--line);overflow:hidden;margin-top:6px}
+.bar i{display:block;height:100%;background:var(--lime)}
+.legend{display:flex;flex-wrap:wrap;gap:8px 14px;font-size:13px;font-weight:700;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.sw{width:14px;height:14px;border-radius:4px;border:2px solid var(--line)}
+.grid{display:grid;grid-template-columns:repeat(10,1fr);gap:5px}
+.cell{appearance:none;border:2px solid var(--line);background:var(--free-bg);color:var(--ink);border-radius:10px;aspect-ratio:1/1;max-width:100%;padding:2px;display:grid;place-items:center;align-content:center;gap:0;font-family:var(--display);font-weight:600;font-size:clamp(14px,3.6vw,22px);cursor:pointer;min-width:0;font-variant-numeric:tabular-nums;position:relative}
+.cell small{display:block;font-family:var(--body);font-size:10px;font-weight:700;line-height:1.1;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding-inline:2px}
+.cell:hover{border-color:var(--teal)}
+.cell:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid var(--lime);outline-offset:2px}
+.cell.pagado{background:var(--paid-bg);border-color:var(--paid);color:var(--paid)}
+.cell.debe{background:var(--owe-bg);border-color:var(--owe);color:var(--owe)}
+.cell.abono{background:var(--part-bg);border-color:var(--part);color:var(--part)}
+.cell.hit{box-shadow:0 0 0 4px var(--lime)}
+@media (max-width:520px){.cell small{display:none}.grid{gap:4px}.cell{border-radius:8px}}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;display:grid;gap:12px;min-width:0}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.list{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.list li{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;justify-content:space-between;border-bottom:1px dashed var(--line);padding-bottom:8px}
+.list li:last-child{border-bottom:0}
+.who{min-width:0;display:grid}
+.who b{overflow-wrap:anywhere}
+.who span{font-size:13px;color:var(--muted)}
+.num{font-family:var(--display);font-weight:600;background:var(--lime-soft);border-radius:8px;padding:1px 8px;margin-right:6px;font-variant-numeric:tabular-nums}
+.money{font-variant-numeric:tabular-nums;font-weight:800}
+.empty{color:var(--muted);font-size:14px;margin:0}
+label{font-weight:700;font-size:13px;display:grid;gap:4px}
+input,select{font:inherit;color:var(--ink);background:var(--bg);border:1.5px solid var(--line);border-radius:10px;padding:9px 11px;width:100%;min-width:0}
+.btn{appearance:none;font:inherit;font-weight:800;font-size:14px;border-radius:10px;padding:9px 14px;border:1.5px solid var(--teal);background:var(--teal);color:var(--teal-ink);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn.lime{background:var(--lime);border-color:var(--lime);color:#123b38}
+.btn.danger{background:transparent;color:var(--owe);border-color:var(--owe)}
+.btn.sm{padding:5px 10px;font-size:13px}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{flex:1 1 90px}
+.seg button[aria-pressed="true"]{background:var(--teal);color:var(--teal-ink);border-color:var(--teal)}
+.overlay{position:fixed;inset:0;background:rgba(5,20,18,.55);display:grid;place-items:end center;z-index:20;padding:env(safe-area-inset-top,0px) max(0px,env(safe-area-inset-right,0px)) 0 max(0px,env(safe-area-inset-left,0px))}
+.sheet{background:var(--surface);color:var(--ink);width:min(560px,100%);max-height:92%;overflow:auto;border-radius:20px 20px 0 0;padding:18px max(16px,env(safe-area-inset-right,0px)) calc(20px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));display:grid;gap:14px}
+@media (min-width:700px){.overlay{place-items:center}.sheet{border-radius:20px}}
+.sheet h2{font-size:26px}
+.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.note{font-size:13px;color:var(--muted);margin:0}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(18px + env(safe-area-inset-bottom,0px));background:var(--teal);color:var(--teal-ink);padding:10px 16px;border-radius:12px;font-weight:700;z-index:30;max-width:calc(100% - 32px)}
+.winner{font-weight:700}
+body{font-size:16px}
+input,select{font-size:17px;min-height:48px}
+.btn{min-height:44px}
+.btn.sm{min-height:38px}
+label{font-size:15px}
+.help{font-weight:600;font-size:13px;color:var(--muted)}
+.opt{font-weight:600;color:var(--muted)}
+.quickpanel{border:2px solid var(--teal)}
+.quick{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;align-items:start}
+.paygroup{border:0;margin:0;padding:0;min-width:0}
+.paygroup legend{font-weight:700;font-size:15px;padding:0;margin-bottom:4px}
+.seg.big button{min-height:48px;font-size:16px}
+.big-btn{min-height:52px;font-size:17px;justify-content:center;align-self:end}
+.check{display:flex;gap:10px;align-items:center;font-size:15px;flex:1 1 200px;align-self:end;min-height:48px}
+.check input{width:22px;height:22px;min-height:0}
+#qNote{font-weight:700;font-size:15px}
+#qNote.bad{color:var(--owe)}
+.cell.pagado::after,.cell.debe::after,.cell.abono::after{position:absolute;top:2px;right:4px;font-family:var(--body);font-size:11px;font-weight:900;line-height:1}
+.cell.pagado::after{content:"✓"}.cell.debe::after{content:"!"}.cell.abono::after{content:"½"}
+.reg{width:100%;border-collapse:collapse;font-size:14px;min-width:560px}
+.reg th{text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding:6px 8px;border-bottom:2px solid var(--line)}
+.reg td{padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top;font-variant-numeric:tabular-nums}
+.reg tr{cursor:pointer}
+.reg tr:hover td{background:var(--lime-soft)}
+.tag{font-size:12px;font-weight:800;border-radius:99px;padding:2px 8px}
+.tag.pagado{background:var(--paid-bg);color:var(--paid)}.tag.debe{background:var(--owe-bg);color:var(--owe)}.tag.abono{background:var(--part-bg);color:var(--part)}
+@media (prefers-reduced-motion:no-preference){.cell{transition:transform .12s}.cell:active{transform:scale(.94)}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Rifa de Morocha</h1>
+      <p class="sub">Premio $100.000 · Puesto $6.000 · Juega martes 24 de noviembre con los dos últimos dígitos de la Lotería del Huila</p>
+      <p class="sub" style="margin-top:2px">Responsable: Natalia Gómez · 323 217 9175</p>
+    </div>
+    <div class="row">
+      <span class="pill" id="soldPill">0 / 100 vendidos</span>
+      <span class="status" id="status">Cargando cuentas…</span>
+    </div>
+  </header>
+
+  <section class="panel quickpanel" aria-labelledby="qTitle">
+    <h2 id="qTitle">Anotar una venta</h2>
+    <form id="qForm" class="quick" novalidate>
+      <label for="qNum">1. Número o números
+        <input id="qNum" inputmode="numeric" maxlength="40" placeholder="Ej: 07  o  07, 23, 45" autocomplete="off" aria-describedby="qNumHelp">
+        <span class="help" id="qNumHelp">Si la persona compró varios, sepáralos con coma o espacio.</span>
+      </label>
+      <label for="qNombre">2. Nombre de quien compró
+        <input id="qNombre" maxlength="60" placeholder="Ej: Ana Ruiz" autocomplete="off" list="nameList" autocapitalize="words">
+      </label>
+      <label for="qTel">3. WhatsApp <span class="opt">(opcional)</span>
+        <input id="qTel" type="tel" inputmode="tel" maxlength="20" placeholder="Ej: 300 123 4567" autocomplete="off">
+      </label>
+      <fieldset class="paygroup">
+        <legend>4. ¿Ya pagó?</legend>
+        <div class="seg big" id="qSeg">
+          <button type="button" class="btn ghost" data-v="pagado" aria-pressed="true">Sí, pagó</button>
+          <button type="button" class="btn ghost" data-v="debe" aria-pressed="false">No, debe</button>
+        </div>
+      </fieldset>
+      <button class="btn big-btn" type="submit" id="qAdd">Guardar venta</button>
+    </form>
+    <datalist id="nameList"></datalist>
+    <p class="note" id="qNote" role="status" aria-live="polite">Queda guardado al instante y el número se pinta en el tablero.</p>
+  </section>
+
+  <section class="stats" aria-label="Resumen de cuentas">
+    <div class="stat hero"><span class="k">Saldo para Morocha</span><span class="v" id="sSaldo">$0</span><span style="font-size:12px;opacity:.85">recaudado menos gastos</span></div>
+    <div class="stat"><span class="k">Recaudado</span><span class="v" id="sRec">$0</span><div class="bar"><i id="barRec" style="width:0%"></i></div><span class="note" id="sMeta">de $600.000 posibles</span></div>
+    <div class="stat"><span class="k">Por cobrar</span><span class="v" id="sDeuda" style="color:var(--owe)">$0</span><span class="note" id="sDeudaN">0 personas deben</span></div>
+    <div class="stat"><span class="k">Gastos veterinarios</span><span class="v" id="sGastos">$0</span><span class="note" id="sGastosN">0 registros</span></div>
+  </section>
+
+  <section class="panel" aria-label="Tablero de puestos">
+    <div class="row" style="justify-content:space-between">
+      <h2>Tablero</h2>
+      <div class="legend">
+        <span><i class="sw" style="background:var(--free-bg)"></i>Libre</span>
+        <span><i class="sw" style="background:var(--owe-bg);border-color:var(--owe)"></i>! Debe</span>
+        <span><i class="sw" style="background:var(--part-bg);border-color:var(--part)"></i>½ Abonó</span>
+        <span><i class="sw" style="background:var(--paid-bg);border-color:var(--paid)"></i>✓ Pagado</span>
+      </div>
+    </div>
+    <p class="note" id="tapHint">Toca un número libre para venderlo, o uno ya vendido para ver o cambiar sus datos (por ejemplo, marcar que ya pagó).</p>
+    <div class="grid" id="grid"></div>
+    <div class="row">
+      <button class="btn lime" id="copyFree" type="button">Copiar números libres para WhatsApp</button>
+      <button class="btn ghost" id="copyAll" type="button">Copiar lista completa</button>
+    </div>
+  </section>
+
+  <div class="two">
+    <section class="panel" aria-label="Quién debe">
+      <h2>Quién debe</h2>
+      <ul class="list" id="debtList"></ul>
+    </section>
+
+    <section class="panel" aria-label="Gastos de Morocha">
+      <h2>Gastos de Morocha</h2>
+      <form id="gastoForm" class="form-grid">
+        <label for="gConcepto">Concepto<input id="gConcepto" required maxlength="80" placeholder="Ej: Radiografía, férula, medicina"></label>
+        <label for="gMonto">Valor<input id="gMonto" required inputmode="numeric" placeholder="Ej: 85000"></label>
+        <label for="gFecha">Fecha<input id="gFecha" type="date"></label>
+        <div style="display:flex;align-items:end"><button class="btn" type="submit" id="gAdd">Agregar gasto</button></div>
+      </form>
+      <ul class="list" id="gastoList"></ul>
+    </section>
+  </div>
+
+  <section class="panel" aria-label="Imagen para redes">
+    <h2>Imagen para redes sociales</h2>
+    <p class="note">Es el mismo flyer con los números vendidos tachados. No muestra deudas ni teléfonos.</p>
+    <div class="row">
+      <label for="pngMode" style="flex:1 1 200px">Diseño<select id="pngMode"><option value="flyer">Flyer de Morocha con números tachados</option><option value="simple">Tablero sencillo</option></select></label>
+      <label for="pngNames" class="check"><input type="checkbox" id="pngNames"> Mostrar el primer nombre de quien compró</label>
+    </div>
+    <img id="pngPreview" alt="Vista previa de la imagen con los números vendidos" style="width:min(420px,100%);border-radius:12px;border:1px solid var(--line)">
+    <div class="row">
+      <button class="btn lime" type="button" id="pngSave">Compartir o guardar imagen</button>
+    </div>
+    <p class="note" id="pngNote">En el celular se abre el menú para enviarla directo a WhatsApp, estados o la galería.</p>
+  </section>
+
+  <section class="panel" aria-label="Registro completo">
+    <div class="row" style="justify-content:space-between">
+      <h2>Registro</h2>
+      <button class="btn ghost sm" type="button" id="csvSave">Descargar respaldo (Excel)</button>
+    </div>
+    <label for="regFilter">Buscar por nombre o número<input id="regFilter" placeholder="Ej: Ana o 23" autocomplete="off"></label>
+    <div style="overflow-x:auto">
+      <table class="reg"><thead><tr><th>N.º</th><th>Nombre</th><th>WhatsApp</th><th>Estado</th><th style="text-align:right">Pagó</th><th>Nota</th></tr></thead><tbody id="regBody"></tbody></table>
+    </div>
+  </section>
+
+  <section class="panel" aria-labelledby="bkTitle">
+    <h2 id="bkTitle">Copia de seguridad</h2>
+    <p class="note">Las cuentas se guardan en este celular. Si se borra Chrome o cambias de teléfono se pierden, así que guarda una copia cada día: envíatela por WhatsApp o guárdala en Drive.</p>
+    <div class="row">
+      <button class="btn" type="button" id="bkSave">Guardar copia de seguridad</button>
+      <label class="btn ghost" for="bkFile" style="display:inline-flex">Restaurar una copia<input type="file" id="bkFile" accept=".json,application/json" style="position:absolute;width:1px;height:1px;opacity:0;min-height:0"></label>
+    </div>
+    <div class="row" id="bkConfirm" hidden>
+      <span id="bkConfirmTxt" style="font-weight:700"></span>
+      <button class="btn danger sm" type="button" id="bkYes">Sí, restaurar</button>
+      <button class="btn ghost sm" type="button" id="bkNo">Cancelar</button>
+    </div>
+  </section>
+
+  <section class="panel" aria-label="Buscar ganador">
+    <h2>El día del sorteo</h2>
+    <form id="winForm" class="row">
+      <label for="winNum" style="flex:1 1 180px">Dos últimos dígitos de la Lotería del Huila<input id="winNum" inputmode="numeric" maxlength="2" placeholder="Ej: 07"></label>
+      <div style="display:flex;align-items:end"><button class="btn" type="submit">Buscar ganador</button></div>
+    </form>
+    <p class="winner" id="winOut" aria-live="polite"></p>
+  </section>
+</div>
+
+<div class="overlay" id="overlay" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="eTitle">
+    <div class="row" style="justify-content:space-between">
+      <h2 id="eTitle">Puesto 0</h2>
+      <button class="btn ghost sm" type="button" id="eClose">Cerrar</button>
+    </div>
+    <form id="eForm" style="display:grid;gap:12px">
+      <div class="form-grid">
+        <label for="eNombre">Nombre<input id="eNombre" maxlength="60" placeholder="Quién compró el número" autocomplete="off"></label>
+        <label for="eTel">WhatsApp<input id="eTel" inputmode="tel" maxlength="20" placeholder="Ej: 300 123 4567"></label>
+      </div>
+      <div style="display:grid;gap:6px">
+        <span style="font-weight:700;font-size:13px">Pago</span>
+        <div class="seg" id="eSeg">
+          <button type="button" class="btn ghost" data-v="debe">Debe</button>
+          <button type="button" class="btn ghost" data-v="abono">Abonó</button>
+          <button type="button" class="btn ghost" data-v="pagado">Pagó $6.000</button>
+        </div>
+        <label for="eAbono" id="eAbonoWrap" hidden>¿Cuánto abonó?<input id="eAbono" inputmode="numeric" placeholder="Ej: 3000"></label>
+      </div>
+      <label for="eNota">Nota (opcional)<input id="eNota" maxlength="120" placeholder="Ej: pagó por Nequi, se lo vendió Natalia"></label>
+      <div class="row">
+        <button class="btn" type="submit" id="eSave">Guardar</button>
+        <a class="btn lime" id="eWa" target="_blank" rel="noopener" href="#">Abrir WhatsApp</a>
+        <button class="btn ghost" type="button" id="eCopy">Copiar mensaje</button>
+        <button class="btn danger" type="button" id="eFree">Liberar número</button>
+      </div>
+      <p class="note" id="eMsgNote"></p>
+      <div class="row" id="eConfirmFree" hidden>
+        <span style="font-weight:700">¿Borrar a esta persona del número?</span>
+        <button class="btn danger sm" type="button" id="eFreeYes">Sí, liberar</button>
+        <button class="btn ghost sm" type="button" id="eFreeNo">No</button>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script>
+const PRICE = 6000, TOTAL = 100;
+const LOTTERY = "martes 24 de noviembre con la Lotería del Huila";
+const puestos = {};          // n -> {nombre, tel, pagado, nota}
+let gastos = [];             // [{id, concepto, monto, fecha}]
+let db = null, canWrite = true, current = null, segVal = "debe";
+const $ = id => document.getElementById(id);
+const fmt = n => (n < 0 ? "-$" : "$") + Math.abs(Math.round(n || 0)).toLocaleString("es-CO");
+const toNum = s => parseInt(String(s || "").replace(/\D/g, ""), 10) || 0;
+const pad = n => String(n).padStart(2, "0");
+
+function estado(p){ if(!p || !p.nombre) return "libre"; const pg = p.pagado||0; return pg >= PRICE ? "pagado" : pg > 0 ? "abono" : "debe"; }
+function waPhone(t){ let d = String(t||"").replace(/\D/g,""); if(d.length===10) d = "57"+d; return d; }
+function waLink(tel, msg){ const p = waPhone(tel); return "https://wa.me/" + (p||"") + "?text=" + encodeURIComponent(msg); }
+function msgFor(n, p){
+  const st = estado(p), first = (p.nombre||"").split(" ")[0];
+  if(st === "pagado") return `Hola ${first}! Recibí tu pago de ${fmt(PRICE)} por el número ${pad(n)} de la rifa de Morocha 🐾. Juega el ${LOTTERY}. ¡Mil gracias por ayudarla!`;
+  const falta = PRICE - (p.pagado||0);
+  return `Hola ${first}! Te recuerdo tu número ${pad(n)} de la rifa de Morocha 🐾. Quedan pendientes ${fmt(falta)}. Juega el ${LOTTERY}. ¡Gracias por ayudarla!`;
+}
+
+function toast(t){ const el = $("toast"); el.textContent = t; el.hidden = false; clearTimeout(toast._t); toast._t = setTimeout(()=> el.hidden = true, 2400); }
+async function copy(text, okMsg){
+  try { await navigator.clipboard.writeText(text); toast(okMsg || "Copiado"); }
+  catch(e){ const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select();
+    try{ document.execCommand("copy"); toast(okMsg || "Copiado"); }catch(_){ toast("No se pudo copiar"); } ta.remove(); }
+}
+
+/* ---------- render ---------- */
+const grid = $("grid");
+for(let n=0;n<TOTAL;n++){
+  const b = document.createElement("button"); b.type="button"; b.className="cell"; b.dataset.n=n;
+  b.innerHTML = `<span>${pad(n)}</span><small></small>`;
+  b.addEventListener("click", ()=> (estado(puestos[n])==="libre" && canWrite) ? prefill(n) : openEditor(n));
+  grid.appendChild(b);
+}
+function render(){
+  let vendidos=0, rec=0, deuda=0, deudores=[];
+  for(let n=0;n<TOTAL;n++){
+    const p = puestos[n], st = estado(p), cell = grid.children[n];
+    cell.className = "cell " + (st==="libre" ? "" : st);
+    cell.querySelector("small").textContent = p && p.nombre ? p.nombre.split(" ")[0] : "";
+    cell.setAttribute("aria-label", `Número ${pad(n)}: ` + (st==="libre" ? "libre" : `${p.nombre}, ${st}`));
+    if(st!=="libre"){ vendidos++; rec += Math.min(p.pagado||0, PRICE); if(st!=="pagado"){ deuda += PRICE-(p.pagado||0); deudores.push(n);} }
+  }
+  const gTot = gastos.reduce((a,g)=>a+(g.monto||0),0);
+  $("soldPill").textContent = `${vendidos} / 100 vendidos`;
+  $("sRec").textContent = fmt(rec); $("barRec").style.width = (rec/(PRICE*TOTAL)*100).toFixed(1)+"%";
+  $("sDeuda").textContent = fmt(deuda);
+  $("sDeudaN").textContent = deudores.length===1 ? "1 número pendiente" : `${deudores.length} números pendientes`;
+  $("sGastos").textContent = fmt(gTot); $("sGastosN").textContent = gastos.length===1 ? "1 registro" : `${gastos.length} registros`;
+  $("sSaldo").textContent = fmt(rec - gTot);
+
+  const dl = $("debtList"); dl.replaceChildren();
+  if(!deudores.length){ const li=document.createElement("p"); li.className="empty"; li.textContent = vendidos ? "Nadie debe. ¡Todo al día!" : "Cuando anotes un número como «Debe» aparecerá aquí, con un botón para cobrarle por WhatsApp."; dl.appendChild(li); }
+  for(const n of deudores){
+    const p = puestos[n], li = document.createElement("li");
+    const who = document.createElement("div"); who.className="who";
+    const b = document.createElement("b"); const num=document.createElement("span"); num.className="num"; num.textContent=pad(n); b.append(num, p.nombre);
+    const s = document.createElement("span"); s.textContent = `Debe ${fmt(PRICE-(p.pagado||0))}` + (p.tel ? ` · ${p.tel}` : "");
+    who.append(b,s);
+    const acts = document.createElement("div"); acts.className="row";
+    const wa = document.createElement("a"); wa.className="btn lime sm"; wa.target="_blank"; wa.rel="noopener"; wa.textContent="Cobrar"; wa.href = waLink(p.tel, msgFor(n,p));
+    const ed = document.createElement("button"); ed.type="button"; ed.className="btn ghost sm"; ed.textContent="Ya pagó";
+    ed.disabled = !canWrite;
+    ed.onclick = ()=> savePuesto(n, {...p, pagado: PRICE}).then(()=>toast(`Número ${pad(n)} marcado como pagado`));
+    acts.append(wa, ed); li.append(who, acts); dl.appendChild(li);
+  }
+
+  const gl = $("gastoList"); gl.replaceChildren();
+  if(!gastos.length){ const e=document.createElement("p"); e.className="empty"; e.textContent="Aún no hay gastos. Anota cada factura del veterinario para saber cuánto queda."; gl.appendChild(e); }
+  for(const g of [...gastos].sort((a,b)=>(b.fecha||"").localeCompare(a.fecha||""))){
+    const li=document.createElement("li"); const who=document.createElement("div"); who.className="who";
+    const b=document.createElement("b"); b.textContent=g.concepto; const s=document.createElement("span"); s.textContent=g.fecha||"";
+    who.append(b,s);
+    const r=document.createElement("div"); r.className="row";
+    const m=document.createElement("span"); m.className="money"; m.textContent=fmt(g.monto);
+    const del=document.createElement("button"); del.type="button"; del.className="btn ghost sm"; del.textContent="Quitar"; del.disabled=!canWrite;
+    del.onclick=()=>{ if(del.dataset.armed){ db.collection("gastos").doc(g.id).delete().then(()=>toast("Gasto quitado")).catch(err); } else { del.dataset.armed="1"; del.textContent="¿Seguro?"; setTimeout(()=>{del.dataset.armed="";del.textContent="Quitar";},3000);} };
+    r.append(m,del); li.append(who,r); gl.appendChild(li);
+  }
+  renderReg();
+  schedulePng();
+  const nl=$("nameList"), seen=new Set(); nl.replaceChildren();
+  for(const k in puestos){ const nm=puestos[k].nombre; if(nm && !seen.has(nm.toLowerCase())){ seen.add(nm.toLowerCase()); const o=document.createElement("option"); o.value=nm; nl.appendChild(o);} }
+  if(current!==null) syncWa();
+}
+
+/* ---------- registro ---------- */
+const ESTADO_TXT = {pagado:"Pagado", debe:"Debe", abono:"Abonó"};
+function renderReg(){
+  const q = $("regFilter").value.trim().toLowerCase(), body = $("regBody"); body.replaceChildren();
+  let shown = 0;
+  for(let n=0;n<TOTAL;n++){
+    const p = puestos[n], st = estado(p); if(st==="libre") continue;
+    if(q && !(p.nombre.toLowerCase().includes(q) || pad(n)===q.padStart(2,"0") || String(n)===q)) continue;
+    shown++;
+    const tr = document.createElement("tr"); tr.onclick = ()=> openEditor(n);
+    const tag = document.createElement("span"); tag.className = "tag "+st; tag.textContent = ESTADO_TXT[st];
+    const cells = [pad(n), p.nombre, p.tel||"", tag, fmt(p.pagado||0), p.nota||""];
+    cells.forEach((c,i)=>{ const td=document.createElement("td"); if(c instanceof Node) td.appendChild(c); else td.textContent=c; if(i===4) td.style.textAlign="right"; tr.appendChild(td); });
+    body.appendChild(tr);
+  }
+  if(!shown){ const tr=document.createElement("tr"), td=document.createElement("td"); td.colSpan=6; td.className="empty"; td.textContent = q ? "Nadie coincide con la búsqueda." : "Aún no hay ventas. Usa «Anotar una venta» o toca un número del tablero."; tr.appendChild(td); body.appendChild(tr); }
+}
+$("regFilter").addEventListener("input", renderReg);
+
+// share=true abre el menú del celular (WhatsApp, Drive, Galería…); si no se puede, descarga el archivo.
+async function saveFile(filename, data, okMsg, share){
+  const type = filename.endsWith(".png") ? "image/png" : filename.endsWith(".csv") ? "text/csv" : "application/json";
+  const blob = data instanceof Blob ? data : new Blob([data], {type});
+  if(share){
+    try{
+      const file = new File([blob], filename, {type});
+      if(navigator.canShare && navigator.canShare({files:[file]})){ await navigator.share({files:[file], title:"Rifa de Morocha"}); return true; }
+    }catch(e){ if(e && e.name==="AbortError") return false; }
+  }
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = filename;
+  document.body.appendChild(a); a.click(); setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); }, 1500);
+  toast(okMsg); return true;
+}
+$("csvSave").onclick = ()=>{
+  const esc = v => `"${String(v??"").replace(/"/g,'""')}"`;
+  const rows = [["Numero","Nombre","WhatsApp","Estado","Pagado","Debe","Nota"]];
+  for(let n=0;n<TOTAL;n++){ const p=puestos[n], st=estado(p); rows.push(st==="libre" ? [pad(n),"","","Libre","","",""] : [pad(n),p.nombre,p.tel||"",ESTADO_TXT[st],p.pagado||0,PRICE-(p.pagado||0),p.nota||""]); }
+  rows.push([]); rows.push(["Gastos"]); rows.push(["Fecha","Concepto","Valor"]);
+  for(const g of gastos) rows.push([g.fecha||"", g.concepto, g.monto]);
+  const csv = "﻿" + rows.map(r=>r.map(esc).join(";")).join("\r\n");
+  saveFile(`rifa-morocha-${new Date().toLocaleDateString("en-CA")}.csv`, csv, "Respaldo descargado");
+};
+
+/* ---------- imagen para redes ---------- */
+let pngTimer = null;
+function schedulePng(){ clearTimeout(pngTimer); pngTimer = setTimeout(drawPng, 250); }
+function rr(ctx,x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
+let pngCanvas = null;
+const flyerImg = new Image(); let flyerOk = false;
+flyerImg.onload = ()=>{ flyerOk = true; schedulePng(); };
+flyerImg.onerror = ()=>{ $("pngMode").value="simple"; $("pngMode").querySelector('[value="flyer"]').disabled=true; schedulePng(); };
+flyerImg.src = "flyer.webp";
+async function drawPng(){
+  try{ await document.fonts.ready; }catch(_){}
+  if($("pngMode").value==="flyer"){ if(flyerOk) return drawFlyer(); return; }
+  const W=1080, H=1350, c = pngCanvas || (pngCanvas = document.createElement("canvas")); c.width=W; c.height=H;
+  const x = c.getContext("2d"), names = $("pngNames").checked;
+  const TEAL="#134e48", LIME="#8fdc2a", BG="#eef7e1", INK="#123b38";
+  x.fillStyle=BG; x.fillRect(0,0,W,H);
+  x.fillStyle=TEAL; rr(x,40,40,W-80,230,36); x.fill();
+  x.fillStyle="#fff"; x.textAlign="left"; x.textBaseline="alphabetic";
+  x.font="700 92px Fredoka, Nunito, sans-serif"; x.fillText("Rifa de Morocha", 80, 150);
+  x.font="700 34px Nunito, sans-serif"; x.fillStyle=LIME; x.fillText("Pro gastos veterinarios · Puesto $6.000", 80, 205);
+  x.fillStyle="#fff"; x.font="600 28px Nunito, sans-serif"; x.fillText("Juega martes 24 de noviembre · Lotería del Huila", 80, 245);
+  let libres=0;
+  const gx=60, gy=310, cw=(W-120-9*8)/10, ch=cw*0.86;
+  for(let n=0;n<TOTAL;n++){
+    const p=puestos[n], sold = estado(p)!=="libre"; if(!sold) libres++;
+    const cx = gx + (n%10)*(cw+8), cy = gy + Math.floor(n/10)*(ch+8);
+    rr(x,cx,cy,cw,ch,14); x.fillStyle = sold ? TEAL : "#ffffff"; x.fill();
+    x.lineWidth=3; x.strokeStyle = sold ? TEAL : "#c9dcbc"; x.stroke();
+    x.textAlign="center"; x.fillStyle = sold ? "#ffffff" : INK;
+    const showName = sold && names && p.nombre;
+    x.font = "700 40px Fredoka, Nunito, sans-serif"; x.fillText(pad(n), cx+cw/2, cy+ (showName? ch*0.52 : ch*0.66));
+    if(showName){ x.font="800 17px Nunito, sans-serif"; x.fillStyle=LIME; let nm=p.nombre.split(" ")[0]; while(x.measureText(nm).width>cw-10 && nm.length>2) nm=nm.slice(0,-1); x.fillText(nm, cx+cw/2, cy+ch*0.82); }
+    else if(sold){ x.strokeStyle=LIME; x.lineWidth=5; x.beginPath(); x.moveTo(cx+14,cy+ch-16); x.lineTo(cx+cw-14,cy+16); x.stroke(); }
+  }
+  const by = gy + 10*(ch+8) + 14;
+  x.textAlign="left"; x.fillStyle=TEAL; rr(x,40,by,W-80,H-by-40,36); x.fill();
+  x.fillStyle=LIME; x.font="700 54px Fredoka, Nunito, sans-serif";
+  x.fillText(libres ? `¡Quedan ${libres} números!` : "¡Todos vendidos, gracias!", 80, by+ (H-by-40)/2 + 6);
+  x.fillStyle="#fff"; x.font="700 28px Nunito, sans-serif"; x.textAlign="right";
+  x.fillText("Aparta el tuyo por WhatsApp", W-80, by+ (H-by-40)/2 + 2);
+  x.textAlign="left"; x.font="600 22px Nunito, sans-serif"; x.fillStyle="#cfe7c0";
+  x.fillText("Premio $100.000 · Natalia Gómez · 323 217 9175", 80, by+ (H-by-40)/2 + 44);
+  $("pngPreview").src = c.toDataURL("image/png");
+}
+/* El flyer (768×1024) tiene la cuadrícula en x 46–722, y 567–910, pero le falta la fila 20–29.
+   Se redibuja la cuadrícula completa de 10 filas encima, al doble de resolución. */
+function drawFlyer(){
+  const S=2, W=768*S, H=1024*S, c = pngCanvas || (pngCanvas = document.createElement("canvas")); c.width=W; c.height=H;
+  const x = c.getContext("2d"), names = $("pngNames").checked;
+  x.imageSmoothingQuality="high"; x.drawImage(flyerImg,0,0,W,H);
+  const X0=44*S, X1=724*S, Y0=565*S, Y1=912*S, gap=3*S;
+  x.fillStyle="#e3f4cf"; rr(x,X0-2*S,Y0-2*S,X1-X0+4*S,Y1-Y0+4*S,8*S); x.fill();
+  const cw=(X1-X0-9*gap)/10, ch=(Y1-Y0-9*gap)/10;
+  for(let n=0;n<TOTAL;n++){
+    const p=puestos[n], sold=estado(p)!=="libre";
+    const cx=X0+(n%10)*(cw+gap), cy=Y0+Math.floor(n/10)*(ch+gap);
+    rr(x,cx,cy,cw,ch,6*S); x.fillStyle= sold ? "#134e48" : "#ffffff"; x.fill();
+    x.lineWidth=1.6*S; x.strokeStyle="#134e48"; x.stroke();
+    x.textAlign="center"; x.textBaseline="middle";
+    const showName = sold && names && p.nombre;
+    x.fillStyle = sold ? "#ffffff" : "#123b38";
+    x.font = `700 ${showName?15*S:21*S}px Fredoka, Nunito, sans-serif`;
+    x.fillText(pad(n), cx+cw/2, cy+ch*(showName?0.36:0.54));
+    if(showName){ x.font=`800 ${9*S}px Nunito, sans-serif`; x.fillStyle="#b6f06a"; let nm=p.nombre.split(" ")[0]; while(x.measureText(nm).width>cw-6*S && nm.length>2) nm=nm.slice(0,-1); x.fillText(nm, cx+cw/2, cy+ch*0.76); }
+    else if(sold){ x.strokeStyle="#8fdc2a"; x.lineWidth=3*S; x.lineCap="round"; x.beginPath(); x.moveTo(cx+8*S,cy+ch-6*S); x.lineTo(cx+cw-8*S,cy+6*S); x.stroke(); }
+  }
+  x.textBaseline="alphabetic";
+  $("pngPreview").src = c.toDataURL("image/png");
+}
+$("pngNames").addEventListener("change", drawPng);
+$("pngMode").addEventListener("change", drawPng);
+$("pngSave").onclick = async ()=>{
+  await drawPng();
+  if(!pngCanvas){ toast("La imagen todavía está cargando, intenta en un momento"); return; }
+  pngCanvas.toBlob(b=>{ if(b) saveFile(`rifa-morocha-${new Date().toLocaleDateString("en-CA")}.png`, b, "Imagen descargada", true); else toast("No se pudo crear la imagen"); }, "image/png");
+};
+
+/* ---------- anotar rápido ---------- */
+let qPay = "pagado";
+for(const b of $("qSeg").children) b.onclick = ()=>{ qPay=b.dataset.v; for(const o of $("qSeg").children) o.setAttribute("aria-pressed", String(o===b)); };
+function qMsg(t, bad){ const el=$("qNote"); el.textContent=t; el.classList.toggle("bad", !!bad); }
+// Al escribir un nombre conocido, completa su WhatsApp
+$("qNombre").addEventListener("change", ()=>{
+  const nm=$("qNombre").value.trim().toLowerCase(); if(!nm || $("qTel").value) return;
+  for(const k in puestos){ const p=puestos[k]; if(p.nombre && p.nombre.toLowerCase()===nm && p.tel){ $("qTel").value=p.tel; break; } }
+});
+$("qForm").addEventListener("submit", async e=>{
+  e.preventDefault();
+  const parts = ($("qNum").value.match(/\d+/g) || []);
+  const nombre = $("qNombre").value.trim();
+  if(!parts.length){ qMsg("Falta el número: escribe uno del 00 al 99.", true); $("qNum").focus(); return; }
+  const nums = [...new Set(parts.map(s=>parseInt(s,10)))];
+  const malos = nums.filter(n=>n>99);
+  if(malos.length){ qMsg(`El ${malos.join(", ")} no existe: los números van del 00 al 99.`, true); $("qNum").focus(); return; }
+  if(!nombre){ qMsg("Falta el nombre de quien compró.", true); $("qNombre").focus(); return; }
+  const ocupados = nums.filter(n=>{ const p=puestos[n]; return p && p.nombre && p.nombre.toLowerCase()!==nombre.toLowerCase(); });
+  if(ocupados.length){ qMsg(ocupados.map(n=>`El ${pad(n)} ya es de ${puestos[n].nombre}`).join(". ")+". Escoge otro número o toca ese número en el tablero para cambiarlo.", true); $("qNum").focus(); return; }
+  $("qAdd").disabled = true;
+  try{
+    for(const n of nums){ const prev=puestos[n]; await savePuesto(n, {nombre, tel: $("qTel").value.trim() || (prev&&prev.tel) || "", pagado: qPay==="pagado" ? PRICE : (prev&&prev.pagado&&prev.pagado<PRICE ? prev.pagado : 0), nota: (prev&&prev.nota)||""}); }
+    const lista = nums.map(pad).join(", ");
+    qMsg(`Guardado: ${lista} para ${nombre} · ${qPay==="pagado" ? "pagado" : "debe "+fmt(PRICE*nums.length)}.`);
+    toast(nums.length>1 ? `${nums.length} números guardados` : `Número ${lista} guardado`);
+    $("qNum").value=""; $("qNombre").value=""; $("qTel").value=""; $("qNum").focus();
+  }catch(_){ qMsg("No se pudo guardar. Revisa el internet e intenta otra vez.", true); } finally{ $("qAdd").disabled = !canWrite; }
+});
+// Tocar un número libre en el tablero lo pone en el formulario rápido
+function prefill(n){ $("qNum").value = pad(n); qMsg(`Número ${pad(n)} listo. Escribe el nombre y guarda.`); $("qNombre").focus(); $("qForm").scrollIntoView({block:"center", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"}); }
+
+/* ---------- editor ---------- */
+function setSeg(v){ segVal=v; for(const b of $("eSeg").children) b.setAttribute("aria-pressed", String(b.dataset.v===v)); $("eAbonoWrap").hidden = v!=="abono"; syncWa(); }
+for(const b of $("eSeg").children) b.onclick = ()=> setSeg(b.dataset.v);
+function draft(){
+  const pagado = segVal==="pagado" ? PRICE : segVal==="abono" ? Math.min(toNum($("eAbono").value), PRICE-1) : 0;
+  return { nombre: $("eNombre").value.trim(), tel: $("eTel").value.trim(), pagado, nota: $("eNota").value.trim() };
+}
+function syncWa(){
+  const d = draft();
+  const ok = !!d.nombre;
+  $("eWa").href = ok ? waLink(d.tel, msgFor(current, d)) : "#";
+  $("eWa").setAttribute("aria-disabled", String(!ok)); $("eWa").style.opacity = ok? "1" : ".45";
+  $("eMsgNote").textContent = !ok ? "Escribe el nombre para preparar el mensaje de WhatsApp." :
+    (d.tel ? "El botón abre el chat con el mensaje listo; ella solo le da enviar." : "Sin número: WhatsApp te pedirá elegir el contacto.");
+}
+["eNombre","eTel","eAbono","eNota"].forEach(id => $(id).addEventListener("input", syncWa));
+function openEditor(n){
+  current = n; const p = puestos[n] || {};
+  $("eTitle").textContent = `Número ${pad(n)}`;
+  $("eNombre").value = p.nombre||""; $("eTel").value = p.tel||""; $("eNota").value = p.nota||"";
+  const st = estado(p); $("eAbono").value = st==="abono" ? p.pagado : "";
+  setSeg(st==="libre" ? "debe" : st);
+  $("eFree").hidden = st==="libre"; $("eConfirmFree").hidden = true;
+  for(const el of $("eForm").querySelectorAll("input,#eSeg button,#eSave,#eFree")) el.disabled = !canWrite;
+  $("overlay").hidden = false; setTimeout(()=> $("eNombre").focus(), 30);
+}
+function closeEditor(){ $("overlay").hidden = true; const n=current; current=null; if(n!==null) grid.children[n].focus(); }
+$("eClose").onclick = closeEditor;
+$("overlay").addEventListener("click", e=>{ if(e.target.id==="overlay") closeEditor(); });
+document.addEventListener("keydown", e=>{ if(e.key==="Escape" && !$("overlay").hidden) closeEditor(); });
+$("eWa").addEventListener("click", e=>{ if(!draft().nombre) e.preventDefault(); });
+$("eCopy").onclick = ()=>{ const d=draft(); if(!d.nombre) return toast("Escribe primero el nombre"); copy(msgFor(current,d),"Mensaje copiado, pégalo en WhatsApp"); };
+$("eForm").addEventListener("submit", async e=>{
+  e.preventDefault(); const d = draft();
+  if(!d.nombre){ toast("Escribe el nombre de quien compró"); $("eNombre").focus(); return; }
+  if(segVal==="abono" && !d.pagado){ toast("Escribe cuánto abonó"); $("eAbono").focus(); return; }
+  const n = current; $("eSave").disabled = true;
+  try{ await savePuesto(n, d); toast(`Número ${pad(n)} guardado`); closeEditor(); } finally { $("eSave").disabled = !canWrite; }
+});
+$("eFree").onclick = ()=> $("eConfirmFree").hidden = false;
+$("eFreeNo").onclick = ()=> $("eConfirmFree").hidden = true;
+$("eFreeYes").onclick = async ()=>{ const n=current; try{ await db.collection("puestos").doc("n"+pad(n)).delete(); toast(`Número ${pad(n)} quedó libre`); closeEditor(); }catch(e){ err(e); } };
+
+async function savePuesto(n, d){
+  if(!db) { toast("Sin conexión con las cuentas"); throw new Error("no db"); }
+  const body = { n, nombre: d.nombre, tel: d.tel||"", pagado: d.pagado||0, nota: d.nota||"", actualizado: new Date().toISOString() };
+  try { await db.collection("puestos").doc("n"+pad(n)).set(body); }
+  catch(e){ err(e); throw e; }
+}
+function err(e){ toast("No se pudo guardar en este celular. Ábrela en Chrome, sin modo incógnito."); }
+function setReadOnly(){ canWrite=false; $("tapHint").textContent="Solo lectura: puedes ver el tablero pero no editarlo."; $("gAdd").disabled=true; $("qAdd").disabled=true; qMsg("Solo lectura: pide que te inviten como Editora para poder anotar.", true); render(); }
+
+/* ---------- gastos ---------- */
+try{ $("gFecha").value = new Date().toLocaleDateString("en-CA"); }catch(_){}
+$("gastoForm").addEventListener("submit", async e=>{
+  e.preventDefault(); if(!db) return toast("Sin conexión con las cuentas");
+  const concepto=$("gConcepto").value.trim(), monto=toNum($("gMonto").value);
+  if(!concepto || !monto) return toast("Escribe concepto y valor");
+  $("gAdd").disabled=true;
+  try{ await db.collection("gastos").add({concepto, monto, fecha: $("gFecha").value||""}); $("gConcepto").value=""; $("gMonto").value=""; toast("Gasto agregado"); }
+  catch(x){ err(x); } finally { $("gAdd").disabled=!canWrite; }
+});
+
+/* ---------- WhatsApp lists & winner ---------- */
+$("copyFree").onclick = ()=>{
+  const libres=[]; for(let n=0;n<TOTAL;n++) if(estado(puestos[n])==="libre") libres.push(n);
+  copy(`🐾 Rifa de Morocha · Premio $100.000 · ${fmt(PRICE)} el puesto\nJuega el ${LOTTERY}.\n\nNúmeros disponibles (${libres.length}):\n${libres.map(pad).join(", ")}\n\n¡Escríbeme para apartar el tuyo!`, "Lista de libres copiada");
+};
+$("copyAll").onclick = ()=>{
+  const lines=[]; for(let n=0;n<TOTAL;n++){ const p=puestos[n], st=estado(p); lines.push(`${pad(n)} -${st==="libre"?"":p.nombre+(st==="pagado"?" ✅":" (pendiente)")}`); }
+  copy(`🐾 Rifa de Morocha · Lotería del Huila, ${LOTTERY.split(" con")[0]}\n\n${lines.join("\n")}`, "Lista completa copiada");
+};
+$("winForm").addEventListener("submit", e=>{
+  e.preventDefault(); const raw=$("winNum").value.replace(/\D/g,""); if(!raw) return;
+  const n = parseInt(raw.slice(-2),10); const p=puestos[n], st=estado(p);
+  for(const c of grid.children) c.classList.remove("hit"); grid.children[n].classList.add("hit");
+  $("winOut").textContent = st==="libre" ? `El ${pad(n)} no se vendió: no hay ganador con ese número.` :
+    `Ganó el ${pad(n)}: ${p.nombre}${p.tel?" ("+p.tel+")":""}. ` + (st==="pagado" ? "Ya había pagado." : `Ojo: le faltaba pagar ${fmt(PRICE-(p.pagado||0))}.`);
+  grid.children[n].scrollIntoView({block:"center", behavior:"smooth"});
+});
+
+/* ---------- datos: se guardan en este celular (localStorage) ---------- */
+const STORE_KEY = "rifa-morocha-v1";
+function emptyStore(){ return {puestos:{}, gastos:{}, ultimaCopia:null}; }
+function loadStore(){ try{ const s = JSON.parse(localStorage.getItem(STORE_KEY)); if(s && s.puestos && s.gastos) return s; }catch(_){} return emptyStore(); }
+let store = loadStore();
+const listeners = {puestos:[], gastos:[]};
+function persist(){ localStorage.setItem(STORE_KEY, JSON.stringify(store)); }
+function emit(col){ const snap = {docs: Object.entries(store[col]).map(([id,v])=>({id, data:()=>v})), metadata:{fromCache:false}}; listeners[col].forEach(f=>f(snap)); }
+function write(col, fn){ const before = JSON.stringify(store); fn(); try{ persist(); }catch(e){ store = JSON.parse(before); emit(col); throw {code:"storage"}; } emit(col); updateStatus(); }
+db = { collection(col){ return {
+  doc(id){ return { set: async v => write(col, ()=>{ store[col][id] = v; }), delete: async () => write(col, ()=>{ delete store[col][id]; }) }; },
+  add: async v => write(col, ()=>{ store[col][Date.now().toString(36)+Math.random().toString(36).slice(2,6)] = v; }),
+  onSnapshot(fn){ listeners[col].push(fn); fn({docs:Object.entries(store[col]).map(([id,v])=>({id,data:()=>v})), metadata:{fromCache:false}}); return ()=>{}; }
+}; } };
+function updateStatus(){
+  const st = $("status"), n = Object.keys(store.puestos).length;
+  if(!store.ultimaCopia){ st.textContent = n ? "Guardado en este celular · aún no hay copia de seguridad" : "Se guarda en este celular"; st.classList.toggle("warn", n>0); return; }
+  const dias = Math.floor((Date.now()-new Date(store.ultimaCopia))/864e5);
+  st.textContent = `Guardado en este celular · última copia ${dias===0?"hoy":dias===1?"ayer":"hace "+dias+" días"}`;
+  st.classList.toggle("warn", dias>=2);
+}
+render();
+try{ localStorage.setItem("rifa-test","1"); localStorage.removeItem("rifa-test"); }
+catch(_){ $("status").textContent = "Este navegador no deja guardar. Ábrela en Chrome, sin modo incógnito."; $("status").classList.add("warn"); }
+try{ navigator.storage && navigator.storage.persist && navigator.storage.persist(); }catch(_){}
+db.collection("puestos").onSnapshot(snap=>{
+  for(const k in puestos) delete puestos[k];
+  for(const d of snap.docs){ const v=d.data(); if(v && typeof v.n==="number") puestos[v.n]=v; }
+  render();
+});
+db.collection("gastos").onSnapshot(snap=>{ gastos = snap.docs.map(d=>({id:d.id, ...d.data()})); render(); });
+updateStatus();
+// Otra pestaña abierta con la rifa: mantener todo igual
+window.addEventListener("storage", e=>{ if(e.key===STORE_KEY){ store = loadStore(); emit("puestos"); emit("gastos"); updateStatus(); } });
+
+/* ---------- copia de seguridad ---------- */
+$("bkSave").onclick = async ()=>{
+  const fecha = new Date().toLocaleDateString("en-CA");
+  const data = JSON.stringify({app:"rifa-morocha", version:1, fecha:new Date().toISOString(), puestos:store.puestos, gastos:store.gastos}, null, 1);
+  const ok = await saveFile(`copia-rifa-morocha-${fecha}.json`, data, "Copia guardada", true);
+  if(ok){ store.ultimaCopia = new Date().toISOString(); try{ persist(); }catch(_){} updateStatus(); }
+};
+$("bkFile").addEventListener("change", async e=>{
+  const f = e.target.files[0]; e.target.value = ""; if(!f) return;
+  try{
+    const d = JSON.parse(await f.text());
+    if(d.app!=="rifa-morocha" || !d.puestos) throw 0;
+    $("bkConfirm").hidden = false; $("bkConfirmTxt").textContent = `Esta copia tiene ${Object.keys(d.puestos).length} números vendidos y ${Object.keys(d.gastos||{}).length} gastos (${(d.fecha||"").slice(0,10)}). Reemplazará lo que hay ahora en este celular.`;
+    $("bkYes").onclick = ()=>{ store.puestos = d.puestos; store.gastos = d.gastos||{}; store.ultimaCopia = d.fecha||null; persist(); emit("puestos"); emit("gastos"); updateStatus(); $("bkConfirm").hidden = true; toast("Copia restaurada"); };
+  }catch(_){ toast("Ese archivo no es una copia de la rifa"); }
+});
+$("bkNo").onclick = ()=> $("bkConfirm").hidden = true;
+</script>
+</body></html>
